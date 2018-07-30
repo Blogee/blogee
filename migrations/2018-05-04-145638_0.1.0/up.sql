@@ -7,9 +7,9 @@ CREATE TABLE user (
 	first_name TEXT NOT NULL,
 	last_name TEXT NOT NULL,
 	bio TEXT NOT NULL,
-	avatar BLOB,
-	website TEXT,
-	gpg TEXT
+	avatar TEXT NOT NULL,
+	website TEXT NOT NULL,
+	gpg TEXT NOT NULL
 );
 
 CREATE TABLE article (
@@ -68,13 +68,15 @@ CREATE TABLE article_tags (
 
 
 INSERT INTO user VALUES (
-"admin@admin.com",
+"admin@blogee.rs",
 "admin",
 "admin",
+"blogee",
 "admin",
-"admin",
-"admin",
-null,
-null,
-null
+"admin for the blog",
+"NONE",
+"blogee.rs",
+"SDD324324DSFS"
 );
+
+

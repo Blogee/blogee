@@ -53,9 +53,9 @@ table! {
         first_name -> Text,
         last_name -> Text,
         bio -> Text,
-        avatar -> Nullable<Binary>,
-        website -> Nullable<Text>,
-        gpg -> Nullable<Text>,
+        avatar -> Text,
+        website -> Text,
+        gpg -> Text,
     }
 }
 

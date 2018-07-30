@@ -1,60 +1,41 @@
-use super::{
-    std,
-    serde_json,
+pub mod executor;
+
+use {
+    serde_derive::{
+        Serialize,
+        Deserialize,
+    },
     futures::future::Future,
     juniper::http::{
         graphiql::graphiql_source,
         GraphQLRequest,
     },
-};
-use actix::prelude::*;
-use actix_web::{
-    AsyncResponder,
-    Error,
-    FutureResponse,
-    HttpRequest,
-    HttpResponse,
-    Json,
-    State,
+    actix::{
+        prelude::*,
+    },
+    actix_web::{
+        AsyncResponder,
+        Error,
+        FutureResponse,
+        HttpRequest,
+        HttpResponse,
+        Json,
+        State,
+    },
+    crate::{
+        blogee_server::{
+            AppState,
+        },
+    },
 };
 
-use models::{
-    Schema,
-};
-
-pub struct AppState {
-    pub executor: Addr<Syn, GraphQLExecutor>,
-}
+pub use self::executor::GraphQLExecutor;
 
 #[derive(Serialize, Deserialize)]
 pub struct GraphQLData(GraphQLRequest);
 
 impl Message for GraphQLData {
     type Result = Result<String, Error>;
-}
-
-pub struct GraphQLExecutor {
-    schema: std::sync::Arc<Schema>,
-}
-
-impl GraphQLExecutor {
-    pub fn new(schema: std::sync::Arc<Schema>) -> GraphQLExecutor {
-        GraphQLExecutor { schema: schema }
-    }
-}
-
-impl Actor for GraphQLExecutor {
-    type Context = SyncContext<Self>;
-}
-
-impl Handler<GraphQLData> for GraphQLExecutor {
-    type Result = Result<String, Error>;
-
-    fn handle(&mut self, msg: GraphQLData, _: &mut Self::Context) -> Self::Result {
-        let res = msg.0.execute(&self.schema, &());
-        let res_text = serde_json::to_string(&res)?;
-        Ok(res_text)
-    }
 }
 
 pub fn graphiql(_req: HttpRequest<AppState>) -> Result<HttpResponse, Error> {

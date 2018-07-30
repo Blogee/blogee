@@ -1,8 +1,6 @@
-use super::{
-    juniper::{
-        FieldResult,
+use juniper::{
+    FieldResult,
         RootNode,
-    },
 };
 
 #[derive(Queryable, GraphQLObject)]
@@ -93,25 +91,49 @@ struct NewUser {
 
 pub struct QueryRoot;
 
-graphql_object!(QueryRoot: () |&self| {
+use crate::graphql::GraphQLExecutor;
+
+graphql_object!(QueryRoot: GraphQLExecutor |&self| {
     field user(&executor, email: String) -> FieldResult<User> {
-        Ok(User {
-            email: "admin@admin.com".to_owned(),
-            username: "admin".to_owned(),
-            password: "xxx".to_owned(),
-            first_name: "admin".to_owned(),
-            last_name: "admin".to_owned(),
-            bio: "Blogee admin bio.".to_owned(),
-            avatar: "qweasdzxc".to_owned(),
-            website: "www.blogee.com".to_owned(),
-            gpg: "aaazaaazaaa".to_owned(),
-        })
+        use crate::db::schema::user::dsl::*;
+        use diesel::prelude::*;
+
+        let db = executor.context().db_pool.get()?;
+        let mut result = user
+            .filter(email.eq(&email))
+            .load::<User>(&*db)
+            .expect("can't find user in db");
+        // Ok(User {
+        //     email: "admin@admin.com".to_owned(),
+        //     username: "admin".to_owned(),
+        //     password: "xxx".to_owned(),
+        //     first_name: "admin".to_owned(),
+        //     last_name: "admin".to_owned(),
+        //     bio: "Blogee admin bio.".to_owned(),
+        //     avatar: "qweasdzxc".to_owned(),
+        //     website: "www.blogee.com".to_owned(),
+        //     gpg: "aaazaaazaaa".to_owned(),
+        // })
+        match result.pop() {
+            Some(item) => Ok(item),
+            None => Ok(User {
+                email: "admin@admin.com".to_owned(),
+                username: "admin".to_owned(),
+                password: "xxx".to_owned(),
+                first_name: "admin".to_owned(),
+                last_name: "admin".to_owned(),
+                bio: "Blogee admin bio.".to_owned(),
+                avatar: "qweasdzxc".to_owned(),
+                website: "www.blogee.com".to_owned(),
+                gpg: "aaazaaazaaa".to_owned(),
+            }),
+        }
     }
 });
 
 pub struct MutationRoot;
 
-graphql_object!(MutationRoot: () |&self| {
+graphql_object!(MutationRoot: GraphQLExecutor |&self| {
     field createUser(&executor, new_user: NewUser) -> FieldResult<User> {
         Ok(User {
             email: new_user.email,
