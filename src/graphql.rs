@@ -1,4 +1,12 @@
 pub mod executor;
+pub mod objects;
+
+pub use self::{
+    objects::{
+        Schema,
+        create_schema,
+    },
+};
 
 use {
     serde_derive::{
@@ -22,10 +30,11 @@ use {
         Json,
         State,
     },
-    crate::{
-        blogee_server::{
-            AppState,
-        },
+};
+
+use crate::{
+    blogee_server::{
+        AppState,
     },
 };
 

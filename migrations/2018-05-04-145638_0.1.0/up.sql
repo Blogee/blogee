@@ -13,7 +13,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE article (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	title TEXT NOT NULL,
 	body TEXT NOT NULL,
 	format TEXT NOT NULL,
@@ -24,13 +24,13 @@ CREATE TABLE article (
 );
 
 CREATE TABLE link (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	href TEXT NOT NULL,
 	title TEXT NOT NULL DEFAULT '',
-	description TEXT DEFAULT '',
+	description TEXT DEFAULT '' NOT NULL,
 	clicked_at TIMESTAMP,
-	clicks INTEGER DEFAULT '0',
-	seen INTEGER DEFAULT '0',
+	clicks INTEGER DEFAULT '0' NOT NULL,
+	seen INTEGER DEFAULT '0' NOT NULL,
 	article_id INTEGER NOT NULL,
 	FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE
 );
@@ -79,4 +79,12 @@ INSERT INTO user VALUES (
 "SDD324324DSFS"
 );
 
-
+INSERT INTO article VALUES (
+'1',
+"Hello Blogee",
+"this is amazing you have installed Blogee",
+"markdown",
+NULL,
+NULL,
+"admin@blogee.rs"
+);

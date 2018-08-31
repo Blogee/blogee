@@ -1,4 +1,3 @@
-#![feature(rust_2018_preview)]
 #![warn(rust_2018_idioms)]
 
 use {
@@ -17,13 +16,11 @@ use {
         dotenv,
     },
     blogee::{
-        models::{
-            create_schema,
-        },
         graphql::{
             graphql,
             graphiql,
             GraphQLExecutor,
+            create_schema,
         },
         db::{
             DbExecutor,

@@ -6,16 +6,15 @@ use {
     actix_web::{
         Error,
     },
-    crate::{
-        graphql::{
-            GraphQLData,
-        },
-        models::{
-            Schema,
-        },
-        db::{
-            DBPool,
-        },
+};
+
+use crate::{
+    graphql::{
+        Schema,
+        GraphQLData,
+    },
+    db::{
+        DBPool,
     },
 };
 
@@ -32,6 +31,8 @@ impl GraphQLExecutor {
         }
     }
 }
+
+impl juniper::Context for GraphQLExecutor {}
 
 impl Actor for GraphQLExecutor {
     type Context = SyncContext<Self>;

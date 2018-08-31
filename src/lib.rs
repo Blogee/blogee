@@ -1,4 +1,3 @@
-#![feature(rust_2018_preview)]
 #![warn(rust_2018_idioms)]
 
 use serde_derive::{
@@ -11,10 +10,11 @@ extern crate juniper;
 #[macro_use]
 extern crate diesel;
 
+use diesel::{Queryable, };
+
 pub mod graphql;
 pub mod db;
 pub mod blogee_server;
-pub mod models;
 
 // use diesel::{
 //     prelude::*,

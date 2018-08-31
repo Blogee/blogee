@@ -1,6 +1,6 @@
 table! {
     article (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         title -> Text,
         body -> Text,
         format -> Text,
@@ -34,13 +34,13 @@ table! {
 
 table! {
     link (id) {
-        id -> Nullable<Integer>,
+        id -> Integer,
         href -> Text,
         title -> Text,
-        description -> Nullable<Text>,
+        description -> Text,
         clicked_at -> Nullable<Timestamp>,
-        clicks -> Nullable<Integer>,
-        seen -> Nullable<Integer>,
+        clicks -> Integer,
+        seen -> Integer,
         article_id -> Integer,
     }
 }

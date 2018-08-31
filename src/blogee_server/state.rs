@@ -1,12 +1,13 @@
 use {
     actix::prelude::*,
-    crate::{
-        graphql::{
-            GraphQLExecutor,
-        },
-        db::{
-            DbExecutor,
-        },
+};
+
+use crate::{
+    graphql::{
+        GraphQLExecutor,
+    },
+    db::{
+        DbExecutor,
     },
 };
 
