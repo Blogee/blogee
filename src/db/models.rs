@@ -2,12 +2,15 @@ use diesel::{
     Queryable,
 };
 
+use juniper::GraphQLObject;
+
 use chrono::prelude::*;
 
-#[derive(Queryable)]
+#[derive(Queryable, GraphQLObject)]
 pub struct User {
     pub email: String,
     pub username: String,
+    #[graphql(skip)]
     pub password: String,
     pub first_name: String,
     pub last_name: String,
@@ -28,7 +31,7 @@ pub struct Article {
     pub user_email: String,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, GraphQLObject)]
 pub struct Link {
     pub id: i32,
     pub href: String,
@@ -40,7 +43,7 @@ pub struct Link {
     pub article_id: i32,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, GraphQLObject)]
 pub struct Comment {
     pub article_is: String,
     pub comment_no: String,
@@ -54,13 +57,13 @@ pub struct Comment {
     pub user: String,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, GraphQLObject)]
 pub struct UserSocials {
     pub email: String,
     pub social: String,
 }
 
-#[derive(Queryable)]
+#[derive(Queryable, GraphQLObject)]
 pub struct ArticleTags {
     pub article_id: String,
     pub tag: String,

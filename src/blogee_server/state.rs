@@ -1,6 +1,4 @@
-use {
-    actix::prelude::*,
-};
+use ::actix::prelude::*;
 
 use crate::{
     graphql::{
