@@ -18,9 +18,6 @@ use {
         graphiql::graphiql_source,
         GraphQLRequest,
     },
-    actix::{
-        prelude::*,
-    },
     actix_web::{
         AsyncResponder,
         Error,
@@ -31,6 +28,9 @@ use {
         State,
     },
 };
+
+use ::actix::prelude::*;
+
 
 use crate::{
     blogee_server::{

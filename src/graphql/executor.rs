@@ -1,12 +1,11 @@
 use {
     serde_json,
-    actix::{
-        prelude::*,
-    },
     actix_web::{
         Error,
     },
 };
+
+use ::actix::prelude::*;
 
 use crate::{
     graphql::{
@@ -45,5 +44,5 @@ impl Handler<GraphQLData> for GraphQLExecutor {
         let res = msg.0.execute(&self.schema, &self);
         let res_text = serde_json::to_string(&res)?;
         Ok(res_text)
-        }
+    }
 }
