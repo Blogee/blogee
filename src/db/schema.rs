@@ -1,52 +1,54 @@
 table! {
-    article (id) {
+    articles (id) {
         id -> Integer,
         title -> Text,
         body -> Text,
         format -> Text,
-        created_at -> Nullable<Timestamp>,
-        last_modified -> Nullable<Timestamp>,
         user_email -> Text,
+        created_at -> Timestamp,
+        last_modified -> Timestamp,
     }
 }
 
 table! {
-    article_tags (article_id, tag) {
+    articles_tags (article_id, tag) {
         article_id -> Integer,
         tag -> Text,
     }
 }
 
 table! {
-    comment (article_id, comment_no) {
+    comments (article_id, comment_no) {
         article_id -> Integer,
         comment_no -> Nullable<Integer>,
         body -> Text,
-        created_at -> Nullable<Timestamp>,
-        last_modified -> Nullable<Timestamp>,
         show_email -> Nullable<Bool>,
         commentor_name -> Text,
         commentor_email -> Text,
         reply_on -> Nullable<Integer>,
         user -> Nullable<Integer>,
+        created_at -> Timestamp,
+        last_modified -> Timestamp,
     }
 }
 
 table! {
-    link (id) {
+    links (id) {
         id -> Integer,
         href -> Text,
-        title -> Text,
-        description -> Text,
+        title -> Nullable<Text>,
+        description -> Nullable<Text>,
         clicked_at -> Nullable<Timestamp>,
         clicks -> Integer,
         seen -> Integer,
         article_id -> Integer,
+        created_at -> Timestamp,
+        last_modified -> Timestamp,
     }
 }
 
 table! {
-    user (email) {
+    users (email) {
         email -> Text,
         username -> Text,
         password -> Text,
@@ -55,28 +57,28 @@ table! {
         bio -> Text,
         avatar -> Text,
         website -> Text,
-        gpg -> Text,
+        gpg -> Nullable<Text>,
     }
 }
 
 table! {
-    user_socials (email, social) {
-        email -> Text,
+    users_socials (user_email, social) {
+        user_email -> Text,
         social -> Text,
     }
 }
 
-joinable!(article -> user (user_email));
-joinable!(article_tags -> article (article_id));
-joinable!(comment -> article (article_id));
-joinable!(link -> article (article_id));
-joinable!(user_socials -> user (email));
+joinable!(articles -> users (user_email));
+joinable!(articles_tags -> articles (article_id));
+joinable!(comments -> articles (article_id));
+joinable!(links -> articles (article_id));
+joinable!(users_socials -> users (user_email));
 
 allow_tables_to_appear_in_same_query!(
-    article,
-    article_tags,
-    comment,
-    link,
-    user,
-    user_socials,
+    articles,
+    articles_tags,
+    comments,
+    links,
+    users,
+    users_socials,
 );
