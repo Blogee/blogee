@@ -1,6 +1,6 @@
 -- Your SQL goes here
 
-CREATE TABLE user (
+CREATE TABLE users (
 	email TEXT UNIQUE PRIMARY KEY NOT NULL,
 	username TEXT NOT NULL,
 	password TEXT NOT NULL,
@@ -9,65 +9,65 @@ CREATE TABLE user (
 	bio TEXT NOT NULL,
 	avatar TEXT NOT NULL,
 	website TEXT NOT NULL,
-	gpg TEXT NOT NULL
+	gpg TEXT
 );
 
-CREATE TABLE article (
+CREATE TABLE articles (
 	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	title TEXT NOT NULL,
 	body TEXT NOT NULL,
 	format TEXT NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	user_email TEXT NOT NULL,
-	FOREIGN KEY (user_email) REFERENCES user(email) ON DELETE CASCADE
+	created_at TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
+	last_modified TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
+	FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
 );
 
-CREATE TABLE link (
+CREATE TABLE links (
 	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	href TEXT NOT NULL,
-	title TEXT NOT NULL DEFAULT '',
-	description TEXT DEFAULT '' NOT NULL,
+	title TEXT,
+	description TEXT,
 	clicked_at TIMESTAMP,
 	clicks INTEGER DEFAULT '0' NOT NULL,
 	seen INTEGER DEFAULT '0' NOT NULL,
 	article_id INTEGER NOT NULL,
-	FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE
+	created_at TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
+	last_modified TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
+	FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE comment (
+CREATE TABLE comments (
 	article_id INTEGER NOT NULL,
 	comment_no INTEGER,
 	body TEXT NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	show_email BOOLEAN DEFAULT 'T',
 	commentor_name TEXT NOT NULL,
 	commentor_email TEXT NOT NULL,
 	reply_on INTEGER DEFAULT '0',
 	user INTEGER,
+	created_at TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
+	last_modified TIMESTAMP DEFAULT (datetime('now','localtime')) NOT NULL,
 	PRIMARY KEY (article_id, comment_no),
-	FOREIGN KEY (reply_on) REFERENCES comment(id) ON DELETE CASCADE,
-	FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE
+	FOREIGN KEY (reply_on) REFERENCES comments(id) ON DELETE CASCADE,
+	FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE user_socials (
-	email TEXT NOT NULL,
+CREATE TABLE users_socials (
+	user_email TEXT NOT NULL,
 	social TEXT NOT NULL,
-	PRIMARY KEY (email, social),
-	FOREIGN KEY (email) REFERENCES user(email) ON DELETE CASCADE
+	PRIMARY KEY (user_email, social),
+	FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
 );
 
-CREATE TABLE article_tags (
+CREATE TABLE articles_tags (
 	article_id INTEGER NOT NULL,
 	tag TEXT NOT NULL,
 	PRIMARY KEY (article_id, tag),
-	FOREIGN KEY (article_id) REFERENCES article(id) ON DELETE CASCADE
+	FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
 );
 
-
-
-INSERT INTO user VALUES (
+INSERT INTO users VALUES (
 "admin@blogee.rs",
 "admin",
 "admin",
@@ -79,12 +79,10 @@ INSERT INTO user VALUES (
 "SDD324324DSFS"
 );
 
-INSERT INTO article VALUES (
+INSERT INTO articles(id, title, body, format, user_email) VALUES (
 '1',
 "Hello Blogee",
 "this is amazing you have installed Blogee",
 "markdown",
-NULL,
-NULL,
 "admin@blogee.rs"
 );

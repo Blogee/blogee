@@ -15,10 +15,10 @@ use diesel::prelude::*;
 
 graphql_object!(QueryRoot: GraphQLExecutor |&self| {
     field user(&executor, email: String) -> FieldResult<User> {
-        use crate::db::schema::user::dsl;
+        use crate::db::schema::users::dsl;
 
         let db = executor.context().db_pool.get()?;
-        let mut result = dsl::user
+        let mut result = dsl::users
             .filter(dsl::email.eq(&email))
             .load::<User>(&*db)
             .expect("cant' execute operation in db");
@@ -31,11 +31,11 @@ graphql_object!(QueryRoot: GraphQLExecutor |&self| {
     }
 
     field article(&executor, id: i32) -> FieldResult<Article> {
-        use crate::db::schema::article::dsl;
+        use crate::db::schema::articles::dsl;
 
 
         let db = executor.context().db_pool.get()?;
-        let mut result = dsl::article
+        let mut result = dsl::articles
             .filter(dsl::id.eq(&id))
             .load::<Article>(&*db)
             .expect("cant' execute operation in db");
@@ -64,11 +64,11 @@ graphql_object!(Article: GraphQLExecutor |&self| {
         self.format.as_str()
     }
 
-    field createdAt() -> Option<NaiveDateTime> {
+    field createdAt() -> NaiveDateTime {
         self.created_at
     }
 
-    field lastModified() -> Option<NaiveDateTime> {
+    field lastModified() -> NaiveDateTime {
         self.last_modified
     }
 
@@ -76,20 +76,11 @@ graphql_object!(Article: GraphQLExecutor |&self| {
         self.user_email.as_str()
     }
 
-    field links(&executor) -> FieldResult<Option<Vec<Link>>> {
-        use crate::db::schema::link::dsl;
-        use diesel::prelude::*;
-
+    field links(&executor) -> FieldResult<Vec<Link>> {
         let db = executor.context().db_pool.get()?;
-        let result = dsl::link
-            .filter(dsl::article_id.eq(&self.id))
-            .load::<Link>(&*db)
-            .expect("cant' execute operation in db");
 
-        match result.len() {
-            0 => Ok(None),
-            _ => Ok(Some(result)),
-        }
+        Ok(Link::belonging_to(self)
+           .load::<Link>(&*db)?)
     }
 });
 

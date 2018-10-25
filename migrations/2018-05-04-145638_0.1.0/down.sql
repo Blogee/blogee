@@ -1,8 +1,8 @@
 -- This file should undo anything in `up.sql`
 
-DROP TABLE user;
-DROP TABLE article;
-DROP TABLE link;
-DROP TABLE comment;
-DROP TABLE user_socials;
-DROP TABLE article_tags;
+DROP TABLE users;
+DROP TABLE articles;
+DROP TABLE links;
+DROP TABLE comments;
+DROP TABLE users_socials;
+DROP TABLE articles_tags;
