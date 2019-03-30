@@ -1,5 +1,6 @@
-
-/target
-**/*.rs.bk
-
-blogee.db
+/docs/
+/lib/
+/bin/
+/.shards/
+/build/
+*.dwarf

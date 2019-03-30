@@ -1,0 +1,13 @@
+name: Blogee
+version: 0.1.0
+
+authors:
+  - tareifz <root@tareifz.me>
+
+targets:
+  .:
+    main: src/blogee.cr
+
+crystal: 0.27.2
+
+license: GPL-3.0
